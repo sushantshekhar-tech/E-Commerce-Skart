@@ -69,8 +69,22 @@ const Navbar = ({ children }) => {
                       </div>
                     </div>
                   </div>
+            
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
+        
+        <Link to='/signup'>
+        <button type="button" className="text-sm font-semibold leading-6 p-3 text-white">
+          Login
+        </button>
+        </Link>
+        
+        <Link to='/signup'>
+        <button type="button" className="text-sm font-semibold p-3 leading-6 text-white">
+          Sign-in
+        </button>
+        </Link>
+        
                       <Link to="/cart">
                         <button
                           type="button"
