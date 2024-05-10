@@ -29,18 +29,18 @@ export const fetchProductsByFiltersAsync = createAsyncThunk(
 
 // Fetch brands
 export const fetchBrandsAsync = createAsyncThunk(
-  "product/fetchBrands",
+  'product/fetchBrands',
   async () => {
     const response = await fetchBrands();
+    // The value we return becomes the `fulfilled` action payload
     return response;
   }
 );
-
-// Fetch categories
 export const fetchCategoriesAsync = createAsyncThunk(
-  "product/fetchCategories",
+  'product/fetchCategories',
   async () => {
     const response = await fetchCategories();
+    // The value we return becomes the `fulfilled` action payload
     return response;
   }
 );
@@ -73,19 +73,18 @@ export const productSlice = createSlice({
       })
       // Fetch brands
       .addCase(fetchBrandsAsync.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(fetchBrandsAsync.fulfilled, (state, action) => {
-        state.status = "idle";
-        state.brands = action.payload; 
+        state.status = 'idle';
+        state.brands = action.payload;
       })
-      // Fetch categories
       .addCase(fetchCategoriesAsync.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(fetchCategoriesAsync.fulfilled, (state, action) => {
-        state.status = "idle";
-        state.categories = action.payload; 
+        state.status = 'idle';
+        state.categories = action.payload;
       });
   },
 });
@@ -94,7 +93,7 @@ export const { increment, decrement, incrementByAmount } = productSlice.actions;
 
 export const selectAllProducts = (state) => state.product.products;
 export const selectTotalItems = (state) => state.product.totalItems;
-export const selectCategories = (state) => state.product.categories;
 export const selectBrands = (state) => state.product.brands;
+export const selectCategories = (state) => state.product.categories;
 
 export default productSlice.reducer;
