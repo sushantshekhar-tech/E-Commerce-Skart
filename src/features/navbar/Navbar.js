@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../../img/logo-skart.png"
 
 //Navbar exports
 import { Fragment } from "react";
@@ -43,9 +44,9 @@ const Navbar = ({ children }) => {
                     <div className="flex-shrink-0">
                       <Link to='/'>
                       <img
-                        className="h-8 w-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
+                        className="h-20 w-20"
+                        src={logo}
+                        alt="SNMR-Kart"
                       />
                       </Link>
                     </div>
@@ -242,7 +243,13 @@ const Navbar = ({ children }) => {
 
         <header className="bg-white shadow">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      
             <h1 className="text-3xl font-bold tracking-tight text-red-900">
+            <img
+                        className="inline h-20 w-20"
+                        src={logo}
+                        alt="SNMR-Kart"
+                      />
               SNMR-Kart
             </h1>
           </div>

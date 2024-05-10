@@ -6,6 +6,10 @@ import {
   selectAllProducts,
   fetchProductsByFiltersAsync,
   selecttotalItems,
+  selectBrands,
+  selectCategories,
+  fetchBrandsAsync,
+  selectTotalItems,
 } from "../ProductSlice";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import {
@@ -23,707 +27,49 @@ import {
 } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { ITEMS_PER_PAGE } from "../../../app/constants";
+import { fetchCategories } from "../ProductAPI";
 
 // Define sort options, subcategories, and filters
 const sortOptions = [
-  { name: "Best Rating", sort: "rating", order: "desc", current: false },
-  { name: "Price: Low to High", sort: "price", order: "asc", current: false },
-  { name: "Price: High to Low", sort: "price", order: "desc", current: false },
-];
+  { name: "Best Rating", sort: "-rating", current: false },
+  { name: "Price: Low to High", sort: "price", current: false },
+  { name: "Price: High to Low", sort: "-price", current: false },
+  ];
 
-const filters = [
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "smartphones", label: "smartphones", checked: false },
-      { value: "laptops", label: "laptops", checked: false },
-      { value: "fragrances", label: "fragrances", checked: false },
-      { value: "skincare", label: "skincare", checked: false },
-      { value: "groceries", label: "groceries", checked: false },
-      {
-        value: "home-decoration",
-        label: "home decoration",
-        checked: false,
-      },
-      { value: "furniture", label: "furniture", checked: false },
-      { value: "tops", label: "tops", checked: false },
-      { value: "womens-dresses", label: "womens dresses", checked: false },
-      { value: "womens-shoes", label: "womens shoes", checked: false },
-      { value: "mens-shirts", label: "mens shirts", checked: false },
-      { value: "mens-shoes", label: "mens shoes", checked: false },
-      { value: "mens-watches", label: "mens watches", checked: false },
-      { value: "womens-watches", label: "womens watches", checked: false },
-      { value: "womens-bags", label: "womens bags", checked: false },
-      {
-        value: "womens-jewellery",
-        label: "womens jewellery",
-        checked: false,
-      },
-      { value: "sunglasses", label: "sunglasses", checked: false },
-      { value: "automotive", label: "automotive", checked: false },
-      { value: "motorcycle", label: "motorcycle", checked: false },
-      { value: "lighting", label: "lighting", checked: false },
-    ],
-  },
-  {
-    id: "brand",
-    name: "Brands",
-    options: [
-      { value: "Apple", label: "Apple", checked: false },
-      { value: "Samsung", label: "Samsung", checked: false },
-      { value: "OPPO", label: "OPPO", checked: false },
-      { value: "Huawei", label: "Huawei", checked: false },
-      {
-        value: "Microsoft Surface",
-        label: "Microsoft Surface",
-        checked: false,
-      },
-      { value: "Infinix", label: "Infinix", checked: false },
-      { value: "HP Pavilion", label: "HP Pavilion", checked: false },
-      {
-        value: "Impression of Acqua Di Gio",
-        label: "Impression of Acqua Di Gio",
-        checked: false,
-      },
-      { value: "Royal_Mirage", label: "Royal_Mirage", checked: false },
-      {
-        value: "Fog Scent Xpressio",
-        label: "Fog Scent Xpressio",
-        checked: false,
-      },
-      { value: "Al Munakh", label: "Al Munakh", checked: false },
-      {
-        value: "Lord - Al-Rehab",
-        label: "Lord   Al Rehab",
-        checked: false,
-      },
-      { value: "L'Oreal Paris", label: "L'Oreal Paris", checked: false },
-      { value: "Hemani Tea", label: "Hemani Tea", checked: false },
-      { value: "Dermive", label: "Dermive", checked: false },
-      {
-        value: "ROREC White Rice",
-        label: "ROREC White Rice",
-        checked: false,
-      },
-      { value: "Fair & Clear", label: "Fair & Clear", checked: false },
-      { value: "Saaf & Khaas", label: "Saaf & Khaas", checked: false },
-      {
-        value: "Bake Parlor Big",
-        label: "Bake Parlor Big",
-        checked: false,
-      },
-      {
-        value: "Baking Food Items",
-        label: "Baking Food Items",
-        checked: false,
-      },
-      { value: "fauji", label: "fauji", checked: false },
-      { value: "Dry Rose", label: "Dry Rose", checked: false },
-      { value: "Boho Decor", label: "Boho Decor", checked: false },
-      { value: "Flying Wooden", label: "Flying Wooden", checked: false },
-      { value: "LED Lights", label: "LED Lights", checked: false },
-      { value: "luxury palace", label: "luxury palace", checked: false },
-      { value: "Golden", label: "Golden", checked: false },
-      {
-        value: "Furniture Bed Set",
-        label: "Furniture Bed Set",
-        checked: false,
-      },
-      {
-        value: "Ratttan Outdoor",
-        label: "Ratttan Outdoor",
-        checked: false,
-      },
-      { value: "Kitchen Shelf", label: "Kitchen Shelf", checked: false },
-      { value: "Multi Purpose", label: "Multi Purpose", checked: false },
-      { value: "AmnaMart", label: "AmnaMart", checked: false },
-      {
-        value: "Professional Wear",
-        label: "Professional Wear",
-        checked: false,
-      },
-      { value: "Soft Cotton", label: "Soft Cotton", checked: false },
-      { value: "Top Sweater", label: "Top Sweater", checked: false },
-      {
-        value: "RED MICKY MOUSE..",
-        label: "RED MICKY MOUSE..",
-        checked: false,
-      },
-      {
-        value: "Digital Printed",
-        label: "Digital Printed",
-        checked: false,
-      },
-      { value: "Ghazi Fabric", label: "Ghazi Fabric", checked: false },
-      { value: "IELGY", label: "IELGY", checked: false },
-      { value: "IELGY fashion", label: "IELGY fashion", checked: false },
-      {
-        value: "Synthetic Leather",
-        label: "Synthetic Leather",
-        checked: false,
-      },
-      {
-        value: "Sandals Flip Flops",
-        label: "Sandals Flip Flops",
-        checked: false,
-      },
-      { value: "Maasai Sandals", label: "Maasai Sandals", checked: false },
-      {
-        value: "Arrivals Genuine",
-        label: "Arrivals Genuine",
-        checked: false,
-      },
-      {
-        value: "Vintage Apparel",
-        label: "Vintage Apparel",
-        checked: false,
-      },
-      { value: "FREE FIRE", label: "FREE FIRE", checked: false },
-      { value: "The Warehouse", label: "The Warehouse", checked: false },
-      { value: "Sneakers", label: "Sneakers", checked: false },
-      { value: "Rubber", label: "Rubber", checked: false },
-      { value: "Naviforce", label: "Naviforce", checked: false },
-      { value: "SKMEI 9117", label: "SKMEI 9117", checked: false },
-      { value: "Strap Skeleton", label: "Strap Skeleton", checked: false },
-      { value: "Stainless", label: "Stainless", checked: false },
-      {
-        value: "Eastern Watches",
-        label: "Eastern Watches",
-        checked: false,
-      },
-      { value: "Luxury Digital", label: "Luxury Digital", checked: false },
-      { value: "Watch Pearls", label: "Watch Pearls", checked: false },
-      { value: "Bracelet", label: "Bracelet", checked: false },
-      { value: "LouisWill", label: "LouisWill", checked: false },
-      {
-        value: "Copenhagen Luxe",
-        label: "Copenhagen Luxe",
-        checked: false,
-      },
-      { value: "Steal Frame", label: "Steal Frame", checked: false },
-      { value: "Darojay", label: "Darojay", checked: false },
-      {
-        value: "Fashion Jewellery",
-        label: "Fashion Jewellery",
-        checked: false,
-      },
-      { value: "Cuff Butterfly", label: "Cuff Butterfly", checked: false },
-      {
-        value: "Designer Sun Glasses",
-        label: "Designer Sun Glasses",
-        checked: false,
-      },
-      { value: "mastar watch", label: "mastar watch", checked: false },
-      { value: "Car Aux", label: "Car Aux", checked: false },
-      { value: "W1209 DC12V", label: "W1209 DC12V", checked: false },
-      { value: "TC Reusable", label: "TC Reusable", checked: false },
-      { value: "Neon LED Light", label: "Neon LED Light", checked: false },
-      {
-        value: "METRO 70cc Motorcycle - MR70",
-        label: "METRO 70cc Motorcycle   MR70",
-        checked: false,
-      },
-      { value: "BRAVE BULL", label: "BRAVE BULL", checked: false },
-      { value: "shock absorber", label: "shock absorber", checked: false },
-      { value: "JIEPOLLY", label: "JIEPOLLY", checked: false },
-      { value: "Xiangle", label: "Xiangle", checked: false },
-      {
-        value: "lightingbrilliance",
-        label: "lightingbrilliance",
-        checked: false,
-      },
-      { value: "Ifei Home", label: "Ifei Home", checked: false },
-      { value: "DADAWU", label: "DADAWU", checked: false },
-      { value: "YIOSI", label: "YIOSI", checked: false },
-    ],
-  },
-];
+
 
 // Utility function to concatenate CSS classes
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-// Product dummy data
-// const oldproducts = [
-//   {
-//     id: 1,
-//     name: "Basic Tee",
-//     href: "#",
-//      thumbnail:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-//   {
-//     id: 2,
-//     name: "Basic Tee",
-//     href: "#",
-//      thumbnail:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-//   {
-//     id: 3,
-//     name: "Basic Tee",
-//     href: "#",
-//      thumbnail:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-//   {
-//     id: 4,
-//     name: "Basic Tee",
-//     href: "#",
-//      thumbnail:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-//   {
-//     id: 5,
-//     name: "Basic Tee",
-//     href: "#",
-//      thumbnail:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-//   {
-//     id: 6,
-//     name: "Basic Tee",
-//     href: "#",
-//      thumbnail:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-//   {
-//     id: 7,
-//     name: "Basic Tee",
-//     href: "#",
-//      thumbnail:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-//   {
-//     id: 8,
-//     name: "Basic Tee",
-//     href: "#",
-//      thumbnail:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-// ];
-// const products = [
-//   {
-//     id: 1,
-//     title: "iPhone 9",
-//     description: "An apple mobile which is nothing like apple",
-//     price: 549,
-//     discountPercentage: 12.96,
-//     rating: 4.69,
-//     stock: 94,
-//     brand: "Apple",
-//     category: "smartphones",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/1/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/1/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/1/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/1/4.jpg",
-//       "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 2,
-//     title: "iPhone X",
-//     description:
-//       "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
-//     price: 899,
-//     discountPercentage: 17.94,
-//     rating: 4.44,
-//     stock: 34,
-//     brand: "Apple",
-//     category: "smartphones",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/2/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/2/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/2/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 3,
-//     title: "Samsung Universe 9",
-//     description:
-//       "Samsung's new variant which goes beyond Galaxy to the Universe",
-//     price: 1249,
-//     discountPercentage: 15.46,
-//     rating: 4.09,
-//     stock: 36,
-//     brand: "Samsung",
-//     category: "smartphones",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/3/thumbnail.jpg",
-//     images: ["https://cdn.dummyjson.com/product-images/3/1.jpg"],
-//   },
-//   {
-//     id: 4,
-//     title: "OPPOF19",
-//     description: "OPPO F19 is officially announced on April 2021.",
-//     price: 280,
-//     discountPercentage: 17.91,
-//     rating: 4.3,
-//     stock: 123,
-//     brand: "OPPO",
-//     category: "smartphones",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/4/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/4/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/4/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/4/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/4/4.jpg",
-//       "https://cdn.dummyjson.com/product-images/4/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 5,
-//     title: "Huawei P30",
-//     description:
-//       "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
-//     price: 499,
-//     discountPercentage: 10.58,
-//     rating: 4.09,
-//     stock: 32,
-//     brand: "Huawei",
-//     category: "smartphones",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/5/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/5/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/5/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/5/3.jpg",
-//     ],
-//   },
-//   {
-//     id: 6,
-//     title: "MacBook Pro",
-//     description:
-//       "MacBook Pro 2021 with mini-LED display may launch between September, November",
-//     price: 1749,
-//     discountPercentage: 11.02,
-//     rating: 4.57,
-//     stock: 83,
-//     brand: "Apple",
-//     category: "laptops",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/6/thumbnail.png",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/6/1.png",
-//       "https://cdn.dummyjson.com/product-images/6/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/6/3.png",
-//       "https://cdn.dummyjson.com/product-images/6/4.jpg",
-//     ],
-//   },
-//   {
-//     id: 7,
-//     title: "Samsung Galaxy Book",
-//     description:
-//       "Samsung Galaxy Book S (2020) Laptop With Intel Lakefield Chip, 8GB of RAM Launched",
-//     price: 1499,
-//     discountPercentage: 4.15,
-//     rating: 4.25,
-//     stock: 50,
-//     brand: "Samsung",
-//     category: "laptops",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/7/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/7/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/7/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/7/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/7/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 8,
-//     title: "Microsoft Surface Laptop 4",
-//     description:
-//       "Style and speed. Stand out on HD video calls backed by Studio Mics. Capture ideas on the vibrant touchscreen.",
-//     price: 1499,
-//     discountPercentage: 10.23,
-//     rating: 4.43,
-//     stock: 68,
-//     brand: "Microsoft Surface",
-//     category: "laptops",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/8/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/8/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/8/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/8/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/8/4.jpg",
-//       "https://cdn.dummyjson.com/product-images/8/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 9,
-//     title: "Infinix INBOOK",
-//     description:
-//       "Infinix Inbook X1 Ci3 10th 8GB 256GB 14 Win10 Grey – 1 Year Warranty",
-//     price: 1099,
-//     discountPercentage: 11.83,
-//     rating: 4.54,
-//     stock: 96,
-//     brand: "Infinix",
-//     category: "laptops",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/9/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/9/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/9/2.png",
-//       "https://cdn.dummyjson.com/product-images/9/3.png",
-//       "https://cdn.dummyjson.com/product-images/9/4.jpg",
-//       "https://cdn.dummyjson.com/product-images/9/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 10,
-//     title: "HP Pavilion 15-DK1056WM",
-//     description:
-//       "HP Pavilion 15-DK1056WM Gaming Laptop 10th Gen Core i5, 8GB, 256GB SSD, GTX 1650 4GB, Windows 10",
-//     price: 1099,
-//     discountPercentage: 6.18,
-//     rating: 4.43,
-//     stock: 89,
-//     brand: "HP Pavilion",
-//     category: "laptops",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/10/thumbnail.jpeg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/10/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/10/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/10/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/10/thumbnail.jpeg",
-//     ],
-//   },
-//   {
-//     id: 11,
-//     title: "perfume Oil",
-//     description:
-//       "Mega Discount, Impression of Acqua Di Gio by GiorgioArmani concentrated attar perfume Oil",
-//     price: 13,
-//     discountPercentage: 8.4,
-//     rating: 4.26,
-//     stock: 65,
-//     brand: "Impression of Acqua Di Gio",
-//     category: "fragrances",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/11/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/11/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/11/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/11/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/11/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 12,
-//     title: "Brown Perfume",
-//     description: "Royal_Mirage Sport Brown Perfume for Men & Women - 120ml",
-//     price: 40,
-//     discountPercentage: 15.66,
-//     rating: 4,
-//     stock: 52,
-//     brand: "Royal_Mirage",
-//     category: "fragrances",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/12/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/12/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/12/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/12/3.png",
-//       "https://cdn.dummyjson.com/product-images/12/4.jpg",
-//       "https://cdn.dummyjson.com/product-images/12/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 13,
-//     title: "Fog Scent Xpressio Perfume",
-//     description:
-//       "Product details of Best Fog Scent Xpressio Perfume 100ml For Men cool long lasting perfumes for Men",
-//     price: 13,
-//     discountPercentage: 8.14,
-//     rating: 4.59,
-//     stock: 61,
-//     brand: "Fog Scent Xpressio",
-//     category: "fragrances",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/13/thumbnail.webp",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/13/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/13/2.png",
-//       "https://cdn.dummyjson.com/product-images/13/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/13/4.jpg",
-//       "https://cdn.dummyjson.com/product-images/13/thumbnail.webp",
-//     ],
-//   },
-//   {
-//     id: 14,
-//     title: "Non-Alcoholic Concentrated Perfume Oil",
-//     description:
-//       "Original Al Munakh® by Mahal Al Musk | Our Impression of Climate | 6ml Non-Alcoholic Concentrated Perfume Oil",
-//     price: 120,
-//     discountPercentage: 15.6,
-//     rating: 4.21,
-//     stock: 114,
-//     brand: "Al Munakh",
-//     category: "fragrances",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/14/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/14/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/14/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/14/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/14/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 15,
-//     title: "Eau De Perfume Spray",
-//     description:
-//       "Genuine  Al-Rehab spray perfume from UAE/Saudi Arabia/Yemen High Quality",
-//     price: 30,
-//     discountPercentage: 10.99,
-//     rating: 4.7,
-//     stock: 105,
-//     brand: "Lord - Al-Rehab",
-//     category: "fragrances",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/15/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/15/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/15/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/15/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/15/4.jpg",
-//       "https://cdn.dummyjson.com/product-images/15/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 16,
-//     title: "Hyaluronic Acid Serum",
-//     description:
-//       "L'OrÃ©al Paris introduces Hyaluron Expert Replumping Serum formulated with 1.5% Hyaluronic Acid",
-//     price: 19,
-//     discountPercentage: 13.31,
-//     rating: 4.83,
-//     stock: 110,
-//     brand: "L'Oreal Paris",
-//     category: "skincare",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/16/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/16/1.png",
-//       "https://cdn.dummyjson.com/product-images/16/2.webp",
-//       "https://cdn.dummyjson.com/product-images/16/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/16/4.jpg",
-//       "https://cdn.dummyjson.com/product-images/16/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 17,
-//     title: "Tree Oil 30ml",
-//     description:
-//       "Tea tree oil contains a number of compounds, including terpinen-4-ol, that have been shown to kill certain bacteria,",
-//     price: 12,
-//     discountPercentage: 4.09,
-//     rating: 4.52,
-//     stock: 78,
-//     brand: "Hemani Tea",
-//     category: "skincare",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/17/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/17/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/17/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/17/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/17/4.jpg",
-//       "https://cdn.dummyjson.com/product-images/17/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 18,
-//     title: "Rose Water 50ml",
-//     description:
-//       "Rose Water Natural Pure Skin Toner, Alcohol-Free Natural 120ml",
-//     price: 10,
-//     discountPercentage: 15.5,
-//     rating: 4.33,
-//     stock: 89,
-//     brand: "Arabian Rose",
-//     category: "skincare",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/18/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/18/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/18/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/18/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/18/4.jpg",
-//       "https://cdn.dummyjson.com/product-images/18/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 19,
-//     title: "Active White Cream",
-//     description:
-//       "DESCRIPTION:  Acne mark treatment cream, Whitening & Lightening & Freckle Removing, Acne Treatment",
-//     price: 20,
-//     discountPercentage: 8.02,
-//     rating: 4.36,
-//     stock: 93,
-//     brand: "Active White",
-//     category: "skincare",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/19/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/19/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/19/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/19/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/19/4.jpg",
-//       "https://cdn.dummyjson.com/product-images/19/thumbnail.jpg",
-//     ],
-//   },
-//   {
-//     id: 20,
-//     title: "SPF50 Sunscreen Lotion",
-//     description:
-//       "DESCRIPTION:  100% Mineral-based UVA/UVB protection with high SPF 50. Protects against sunburn and the effects of skin damage",
-//     price: 25,
-//     discountPercentage: 15.2,
-//     rating: 4.27,
-//     stock: 68,
-//     brand: "Coppertone",
-//     category: "skincare",
-//     thumbnail: "https://cdn.dummyjson.com/product-images/20/thumbnail.jpg",
-//     images: [
-//       "https://cdn.dummyjson.com/product-images/20/1.jpg",
-//       "https://cdn.dummyjson.com/product-images/20/2.jpg",
-//       "https://cdn.dummyjson.com/product-images/20/3.jpg",
-//       "https://cdn.dummyjson.com/product-images/20/4.jpg",
-//       "https://cdn.dummyjson.com/product-images/20/thumbnail.jpg",
-//     ],
-//   },
-// ];
+
 
 // Main ProductList component
 export default function ProductList() {
   const dispatch = useDispatch();
 
   const products = useSelector(selectAllProducts);
-  const totalItems = useSelector(selecttotalItems);
+  const totalItems = useSelector(selectTotalItems);
+  const brands = useSelector(selectBrands);
+  const categories = useSelector(selectCategories);
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [page, setPage] = useState(1);
+
+  const filters = [
+    {
+      id: "category",
+      name: "Category",
+      options: categories,
+    },
+    {
+      id: "brand",
+      name: "Brands",
+      options: brands,
+    },
+  ];
 
   const handleFilter = (e, section, option) => {
     //checking if the filter is checked or not
@@ -744,12 +90,22 @@ export default function ProductList() {
     console.log({ newFilter });
     setFilter(newFilter);
   };
+//older
+  // const handleSort = (e, option) => {
+  //   const sort = { _sort: option.sort };
+  //   // const sort = {_sort:option.sort,_order:option.order};
+  //   setSort(sort);
+  // };
 
-  const handleSort = (e, option) => {
-    const sort = { _sort: option.sort };
-    // const sort = {_sort:option.sort,_order:option.order};
+  //new
+ 
+    
+    const handleSort = (e, option) => {
+    const sort = { _sort: option.sort};
     setSort(sort);
-  };
+    };
+
+
 
   const handlePage = (page) => {
     console.log({ page });
@@ -759,8 +115,18 @@ export default function ProductList() {
 
   useEffect(() => {
     const Pagination = { _page: page, _limit: ITEMS_PER_PAGE };
+    
     dispatch(fetchProductsByFiltersAsync({ filter, sort, Pagination }));
   }, [dispatch, filter, sort, page]);
+
+  useEffect(()=>{
+    setPage(1);
+  },[totalItems,sort])
+
+  useEffect(()=>{
+    dispatch(fetchBrandsAsync())
+    dispatch(fetchCategories())
+  },[])
 
   return (
     <div>
@@ -772,6 +138,7 @@ export default function ProductList() {
             mobileFiltersOpen={mobileFiltersOpen}
             setMobileFiltersOpen={setMobileFiltersOpen}
             handleFilter={handleFilter}
+            filters ={filters}
           ></MobileFilter>
 
           <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -853,7 +220,7 @@ export default function ProductList() {
               <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                 {/* Filters */}
 
-                <DesktopFilter handleFilter={handleFilter}></DesktopFilter>
+                <DesktopFilter handleFilter={handleFilter} filters={filters}></DesktopFilter>
 
                 {/* Product grid */}
                 <div className="lg:col-span-3">
@@ -880,6 +247,7 @@ function MobileFilter({
   mobileFiltersOpen,
   setMobileFiltersOpen,
   handleFilter,
+  filters,
 }) {
   return (
     <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -993,7 +361,7 @@ function MobileFilter({
   );
 }
 
-function DesktopFilter({ handleFilter }) {
+function DesktopFilter({ handleFilter,filters }) {
   return (
     <form className="hidden lg:block">
       {filters.map((section) => (
@@ -1049,7 +417,7 @@ function DesktopFilter({ handleFilter }) {
   );
 }
 
-function Pagination({ page, setPage, handlePage, totalItems=100 }) {
+function Pagination({ page, setPage, handlePage, totalItems }) {
   return (
     <div>
       <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
@@ -1074,7 +442,7 @@ function Pagination({ page, setPage, handlePage, totalItems=100 }) {
               <span className="font-medium">
                 {(page - 1) * ITEMS_PER_PAGE + 1}
               </span>{" "}
-              to <span className="font-medium">{page * ITEMS_PER_PAGE}</span> of{" "}
+              to <span className="font-medium">{page * ITEMS_PER_PAGE > totalItems? totalItems : page * ITEMS_PER_PAGE}</span> of{" "}
               <span className="font-medium">{totalItems}</span> results
             </p>
           </div>
