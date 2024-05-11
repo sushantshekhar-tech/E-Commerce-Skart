@@ -52,9 +52,20 @@ export function fetchCategories() {
   );
 }
 
+//For fetching the brands from the API
 export function fetchBrands() {
   return new Promise(async (resolve) =>{
     const response = await fetch('http://localhost:8080/brands') 
+    const data = await response.json()
+    resolve(data)
+  }
+  );
+}
+
+//For fetching the product for the details page
+export function fetchProductById(id) {
+  return new Promise(async (resolve) =>{
+    const response = await fetch('http://localhost:8080/products/'+id) 
     const data = await response.json()
     resolve(data)
   }
