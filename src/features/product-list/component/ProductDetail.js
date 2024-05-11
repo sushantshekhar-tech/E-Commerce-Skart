@@ -109,7 +109,7 @@ export default function ProductDetail() {
           {/* Options */}
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl tracking-tight text-red-500">Rs.{product.price}</p>
+            <p className="text-3xl tracking-tight text-red-500">Rs.{product.price}/-</p>
 
             {/* Reviews */}
             <div className="mt-6">

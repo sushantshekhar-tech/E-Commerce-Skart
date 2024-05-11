@@ -48,7 +48,9 @@
       "brand": "Samsung",
       "category": "smartphones",
       "thumbnail": "https://cdn.dummyjson.com/product-images/3/thumbnail.jpg",
-      "images": ["https://cdn.dummyjson.com/product-images/3/1.jpg"]
+      "images": [
+        "https://cdn.dummyjson.com/product-images/3/1.jpg"
+      ]
     },
     {
       "id": 4,
@@ -1426,7 +1428,9 @@
       "brand": "Fashion Jewellery",
       "category": "womens-jewellery",
       "thumbnail": "https://cdn.dummyjson.com/product-images/78/thumbnail.jpg",
-      "images": ["https://cdn.dummyjson.com/product-images/78/thumbnail.jpg"]
+      "images": [
+        "https://cdn.dummyjson.com/product-images/78/thumbnail.jpg"
+      ]
     },
     {
       "id": 79,
@@ -1439,7 +1443,9 @@
       "brand": "Fashion Jewellery",
       "category": "womens-jewellery",
       "thumbnail": "https://cdn.dummyjson.com/product-images/79/thumbnail.jpg",
-      "images": ["https://cdn.dummyjson.com/product-images/79/1.jpg"]
+      "images": [
+        "https://cdn.dummyjson.com/product-images/79/1.jpg"
+      ]
     },
     {
       "id": 80,
@@ -2327,7 +2333,67 @@
       "label": "lighting",
       "checked": false
     }
+  ],
+  "users": [
+    {
+      "id": "d1d7"
+    },
+    {
+      "id": "4919",
+      "email": "shekhar@gmail.com",
+      "password": "Qwerty@123"
+    },
+    {
+      "id": "5c6f",
+      "email": "shekhar@gmail.com",
+      "password": "Qwerty@123",
+      "confirmPassword": "Qwerty@123"
+    },
+    {
+      "id": "5c5b",
+      "email": "sssssar@gmail.com",
+      "password": "Qwerty@123",
+      "confirmPassword": "Qwerty@123"
+    },
+    {
+      "id": "2d1d",
+      "email": "shekharsushant@gmail.com",
+      "password": "Sushant@123"
+    },
+    {
+      "id": "a315",
+      "email": "shekhasushant@gmail.com",
+      "password": "Sushant@123"
+    },
+    {
+      "id": "5016",
+      "email": "shekhasushant@gmail.com",
+      "password": "Sushant@123"
+    },
+    {
+      "id": "76f9",
+      "email": "sushant@gmail.com",
+      "password": "Sushant@123"
+    },
+    {
+      "id": "fc9f",
+      "email": "sushant@gmail.com",
+      "password": "Sushant@123"
+    },
+    {
+      "id": "9268",
+      "email": "mahi@gmail.com",
+      "password": "Mahi@123"
+    },
+    {
+      "id": "60e0",
+      "email": "mahi@gmail.com",
+      "password": "Mahi@123"
+    },
+    {
+      "id": "ec20",
+      "email": "simran@gmail.com",
+      "password": "Mahi@123"
+    }
   ]
-
- 
 }
