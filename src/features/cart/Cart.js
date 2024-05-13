@@ -1,64 +1,37 @@
 import React, { useState , Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { increment, incrementAsync, selectCount } from "./cartSlice";
+import {  deleteItemFromCartAsync, selectItems, updateCartAsync } from "./cartSlice";
 import { Link } from "react-router-dom";
 
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
-// Cart Product List
-const products = [
-  {
-    id: 1,
-    name: 'Throwback Hip Bag',
-    href: '#',
-    color: 'Salmon',
-    price: '$90.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
-    imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
-  },
-  {
-    id: 2,
-    name: 'Medium Stuff Satchel',
-    href: '#',
-    color: 'Blue',
-    price: '$32.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-  },
-  {
-    id: 3,
-    name: 'Medium Stuff Satchel',
-    href: '#',
-    color: 'Blue',
-    price: '$32.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-  },
-  {
-    id: 4,
-    name: 'Medium Stuff Satchel',
-    href: '#',
-    color: 'Blue',
-    price: '$32.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-  },
-  // More products...
-];
+
+
 
 export default function Cart() {
 
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
+
+  //for displaying the items in the cart according to the user
+  const items =useSelector(selectItems);
+
+  //For calculating the amount of each items and displacing the total price
+  const totalAmount = items.reduce((amount,items)=>items.price*items.quantity+amount,0);
+  const totalItems = items.reduce((total,items)=>items.quantity+total,0);
+
+  //For handling the quantity of the product of the user
+  const handleQuantity= (e,item) =>{
+    e.preventDefault();
+dispatch(updateCartAsync({...item,quantity:+e.target.value}))
+  };
   
+//For deleting the item from the cart
+const handleRemove=(e,id)=>{
+dispatch(deleteItemFromCartAsync(id));
+}
+
   return (
     <>
   <div className="mx-auto mt-20 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -66,12 +39,12 @@ export default function Cart() {
 <h1 className="text-4xl my-5 font-bold tracking-tight text-gray-900" >My Cart</h1>
         <div className="flow-root">
           <ul role="list" className="-my-6 divide-y divide-gray-200">
-            {products.map((product) => (
-              <li key={product.id} className="flex py-6">
+            {items.map((item) => (
+              <li key={item.id} className="flex py-6">
                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                   <img
-                    src={product.imageSrc}
-                    alt={product.imageAlt}
+                    src={item.thumbnail}
+                    alt={item.title}
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
@@ -79,11 +52,11 @@ export default function Cart() {
                   <div>
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <h3>
-                        <a href={product.href}>{product.name}</a>
+                        <a href={item.href}>{item.title}</a>
                       </h3>
-                      <p className="ml-4">{product.price}</p>
+                      <p className="ml-4">Rs.{item.price}</p>
                     </div>
-                    <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                    <p className="mt-1 text-sm text-gray-500">{item.brand}</p>
                   </div>
                   <div className="flex flex-1 items-end justify-between text-sm">
                     <div className="text-gray-500">
@@ -91,15 +64,17 @@ export default function Cart() {
               Qty
             </label>
                        
-                    <select >
+                    <select onChange={(e)=>handleQuantity(e,item)} value={item.quantity}>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
                       <option value="4">4</option>
+                      <option value="5">5</option>
                     </select>
                    </div>
                     <div className="flex">
                       <button
+                      onClick={e=>handleRemove(e,item.id)}
                         type="button"
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
@@ -115,9 +90,13 @@ export default function Cart() {
       </div>
 
       <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-        <div className="flex justify-between text-base font-medium text-gray-900">
+        <div className="flex my-2 justify-between text-base font-medium text-red-500">
           <p>Subtotal</p>
-          <p>$262.00</p>
+          <p>Rs.{totalAmount}</p>
+        </div>
+        <div className="flex my-2 justify-between text-base font-medium text-red-500">
+          <p>Total Item in the cart</p>
+          <p>{totalItems} items</p>
         </div>
         <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
         <div className="mt-6">

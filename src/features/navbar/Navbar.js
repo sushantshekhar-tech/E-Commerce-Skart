@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../img/logo-skart.png"
+import { useSelector } from "react-redux";
+import { selectItems } from "../cart/cartSlice";
 
 //Navbar exports
 import { Fragment } from "react";
@@ -10,6 +12,7 @@ import {
   ShoppingCartIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+
 
 const user = {
   name: "Tom Cook",
@@ -32,6 +35,10 @@ function classNames(...classes) {
 }
 
 const Navbar = ({ children }) => {
+  
+//For showing the items in the cart
+const items =useSelector(selectItems);
+
   return (
     <>
       <div className="min-h-full">
@@ -100,9 +107,9 @@ const Navbar = ({ children }) => {
                         </button>
                       </Link>
 
-                      <span className="inline-flex items-center rounded-md mb-7   bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-                        0
-                      </span>
+                      {items.length>0 && <span className="inline-flex items-center rounded-md   bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                    {items.length}
+                    </span>}
 
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
@@ -219,9 +226,9 @@ const Navbar = ({ children }) => {
                       </button>
                     </Link>
 
-                    <span className="inline-flex items-center rounded-md   bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-                      0
-                    </span>
+                   {items.length>0 && <span className="inline-flex items-center rounded-md   bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                    {items.length}
+                    </span>}
                   </div>
                   <div className="mt-3 space-y-1 px-2">
                     {userNavigation.map((item) => (
