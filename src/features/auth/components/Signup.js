@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectLoggedInUser ,createUserAsync} from "../authSlice";
-import { Link } from "react-router-dom";
+import { Link , Navigate} from "react-router-dom";
 import { useForm } from "react-hook-form"
 import logo from "../../../img/logo-skart.png"
 
@@ -24,7 +24,8 @@ export default function Signup() {
 //   };
 
   return (
-   
+    <>
+    { user && <Navigate to="/" replace={true}></Navigate>}
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
       {user?.email}
@@ -132,5 +133,8 @@ export default function Signup() {
         </p>
       </div>
     </div>
+    </>
+    
+   
   );
 }
