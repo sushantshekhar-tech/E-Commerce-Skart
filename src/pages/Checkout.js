@@ -13,6 +13,7 @@ import {
 } from "../features/auth/authSlice";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Dialog, Transition } from "@headlessui/react";
+import { createOrderAsync } from "../features/order/orderSlice";
 
 function Checkout() {
   //useForms
@@ -41,7 +42,7 @@ function Checkout() {
   const totalItems = items.reduce((total, items) => items.quantity + total, 0);
 
   //To select the selected addresses
-  const[selectedaddress,setSelectedAddress]=useState(null);
+  const[selectedAddress,setselectedAddress]=useState(null);
   
   //To select the payment method
   const[paymentMethod,setPaymentMethod]=useState('cash');
@@ -60,7 +61,7 @@ function Checkout() {
   //Function for handling the address
   const handleAddress = (e) =>{
     // console.log(user.addresses[e.target.value])
-  setSelectedAddress(user.addresses[e.target.value]);
+  setselectedAddress(user.addresses[e.target.value]);
 
   }
 
@@ -70,6 +71,11 @@ function Checkout() {
 setPaymentMethod(e.target.value);
   }
 
+  //Function to handle the order
+  const handleOrder = () =>{
+    const order = {items,totalAmount,totalItems,user,paymentMethod,selectedAddress}
+    dispatch(createOrderAsync(order))
+  }
   return (
     <>
       {!items.length > 0 && <Navigate to="/" replace={true}></Navigate>}
@@ -430,12 +436,12 @@ setPaymentMethod(e.target.value);
                   Shipping and taxes calculated at checkout.
                 </p>
                 <div className="mt-6">
-                  <Link
-                    to="/checkout"
-                    className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                  <div
+                 onClick={handleOrder}
+                    className="flex items-center cursor-pointer justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                   >
-                    Checkout
-                  </Link>
+                   Order Now
+                  </div>
                 </div>
                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                   <p>

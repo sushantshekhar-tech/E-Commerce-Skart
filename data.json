@@ -2582,7 +2582,156 @@
       "user": "329e"
     }
   ],
-  "orders":[
-    
+  "orders": [
+    {
+      "id": "bc4b",
+      "items": [
+        {
+          "id": "22c1",
+          "title": "Tree Oil 30ml",
+          "description": "Tea tree oil contains a number of compounds, including terpinen-4-ol, that have been shown to kill certain bacteria,",
+          "price": 12,
+          "discountPercentage": 4.09,
+          "rating": 4.52,
+          "stock": 78,
+          "brand": "Hemani Tea",
+          "category": "skincare",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/17/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/17/1.jpg",
+            "https://cdn.dummyjson.com/product-images/17/2.jpg",
+            "https://cdn.dummyjson.com/product-images/17/3.jpg",
+            "https://cdn.dummyjson.com/product-images/17/thumbnail.jpg"
+          ],
+          "quantity": 2,
+          "user": "329e"
+        },
+        {
+          "id": "ef4d",
+          "title": "cereals muesli fruit nuts",
+          "description": "original fauji cereal muesli 250gm box pack original fauji cereals muesli fruit nuts flakes breakfast cereal break fast faujicereals cerels cerel foji fouji",
+          "price": 46,
+          "discountPercentage": 16.8,
+          "rating": 4.94,
+          "stock": 113,
+          "brand": "fauji",
+          "category": "groceries",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/24/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/24/1.jpg",
+            "https://cdn.dummyjson.com/product-images/24/2.jpg",
+            "https://cdn.dummyjson.com/product-images/24/3.jpg",
+            "https://cdn.dummyjson.com/product-images/24/4.jpg",
+            "https://cdn.dummyjson.com/product-images/24/thumbnail.jpg"
+          ],
+          "quantity": 1,
+          "user": "329e"
+        }
+      ],
+      "totalAmount": 70,
+      "totalItems": 3,
+      "user": {
+        "id": "329e",
+        "email": "abc@gmail.com",
+        "addresses": [
+          {
+            "name": "sushant shekhar",
+            "email": "sushant@gmail.com",
+            "phone": "9330320740",
+            "street": "gali no 10",
+            "city": "Dhanbad",
+            "state": "Jharkhand",
+            "pinCode": "826001"
+          },
+          {
+            "name": "mahi ",
+            "email": "mahi@gmail.com",
+            "phone": "9332540540",
+            "street": "koyala nagar",
+            "city": "Ranchi",
+            "state": "Jharkhand",
+            "pinCode": "860025"
+          }
+        ],
+        "password": "Raspberry@123"
+      },
+      "paymentMethod": "cash",
+      "selectedAddress": null
+    },
+    {
+      "id": "efce",
+      "items": [
+        {
+          "id": "22c1",
+          "title": "Tree Oil 30ml",
+          "description": "Tea tree oil contains a number of compounds, including terpinen-4-ol, that have been shown to kill certain bacteria,",
+          "price": 12,
+          "discountPercentage": 4.09,
+          "rating": 4.52,
+          "stock": 78,
+          "brand": "Hemani Tea",
+          "category": "skincare",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/17/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/17/1.jpg",
+            "https://cdn.dummyjson.com/product-images/17/2.jpg",
+            "https://cdn.dummyjson.com/product-images/17/3.jpg",
+            "https://cdn.dummyjson.com/product-images/17/thumbnail.jpg"
+          ],
+          "quantity": 2,
+          "user": "329e"
+        },
+        {
+          "id": "ef4d",
+          "title": "cereals muesli fruit nuts",
+          "description": "original fauji cereal muesli 250gm box pack original fauji cereals muesli fruit nuts flakes breakfast cereal break fast faujicereals cerels cerel foji fouji",
+          "price": 46,
+          "discountPercentage": 16.8,
+          "rating": 4.94,
+          "stock": 113,
+          "brand": "fauji",
+          "category": "groceries",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/24/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/24/1.jpg",
+            "https://cdn.dummyjson.com/product-images/24/2.jpg",
+            "https://cdn.dummyjson.com/product-images/24/3.jpg",
+            "https://cdn.dummyjson.com/product-images/24/4.jpg",
+            "https://cdn.dummyjson.com/product-images/24/thumbnail.jpg"
+          ],
+          "quantity": 1,
+          "user": "329e"
+        }
+      ],
+      "totalAmount": 70,
+      "totalItems": 3,
+      "user": {
+        "id": "329e",
+        "email": "abc@gmail.com",
+        "addresses": [
+          {
+            "name": "sushant shekhar",
+            "email": "sushant@gmail.com",
+            "phone": "9330320740",
+            "street": "gali no 10",
+            "city": "Dhanbad",
+            "state": "Jharkhand",
+            "pinCode": "826001"
+          },
+          {
+            "name": "mahi ",
+            "email": "mahi@gmail.com",
+            "phone": "9332540540",
+            "street": "koyala nagar",
+            "city": "Ranchi",
+            "state": "Jharkhand",
+            "pinCode": "860025"
+          }
+        ],
+        "password": "Raspberry@123"
+      },
+      "paymentMethod": "cash",
+      "selectedAddress": null
+    }
   ]
 }
