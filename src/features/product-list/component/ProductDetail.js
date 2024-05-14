@@ -55,7 +55,10 @@ export default function ProductDetail() {
   //handling the cart item
   const handleCart = (e) =>{
     e.preventDefault();
-dispatch(addToCartAsync({...product,quantity:1,user:user.id}));
+    //to fix the issue of the product id clashing with the cart id
+    const newItem = {...product,quantity:1,user:user.id};
+    delete newItem['id'];
+dispatch(addToCartAsync(newItem));
   }
   
 
