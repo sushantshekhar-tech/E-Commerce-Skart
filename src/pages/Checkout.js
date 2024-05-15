@@ -13,7 +13,7 @@ import {
 } from "../features/auth/authSlice";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Dialog, Transition } from "@headlessui/react";
-import { createOrderAsync } from "../features/order/orderSlice";
+import { createOrderAsync, selectCurrentOrder} from "../features/order/orderSlice";
 
 function Checkout() {
   //useForms
@@ -27,6 +27,7 @@ function Checkout() {
 
   //Adding the address of a particular user
   const user = useSelector(selectLoggedInUser);
+  const currentOrder =useSelector(selectCurrentOrder);
 
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
@@ -42,10 +43,10 @@ function Checkout() {
   const totalItems = items.reduce((total, items) => items.quantity + total, 0);
 
   //To select the selected addresses
-  const[selectedAddress,setselectedAddress]=useState(null);
-  
+  const [selectedAddress, setselectedAddress] = useState(null);
+
   //To select the payment method
-  const[paymentMethod,setPaymentMethod]=useState('cash');
+  const [paymentMethod, setPaymentMethod] = useState("cash");
 
   //For handling the quantity of the product of the user
   const handleQuantity = (e, item) => {
@@ -59,26 +60,38 @@ function Checkout() {
   };
 
   //Function for handling the address
-  const handleAddress = (e) =>{
+  const handleAddress = (e) => {
     // console.log(user.addresses[e.target.value])
-  setselectedAddress(user.addresses[e.target.value]);
-
-  }
+    setselectedAddress(user.addresses[e.target.value]);
+  };
 
   //Function for handling the payments
-  const handlePayment = (e) =>{
+  const handlePayment = (e) => {
     // console.log(e.target.value)
-setPaymentMethod(e.target.value);
-  }
+    setPaymentMethod(e.target.value);
+  };
 
   //Function to handle the order
-  const handleOrder = () =>{
-    const order = {items,totalAmount,totalItems,user,paymentMethod,selectedAddress}
-    dispatch(createOrderAsync(order))
-  }
+  const handleOrder = () => {
+    const order = {
+      items,
+      totalAmount,
+      totalItems,
+      user,
+      paymentMethod,
+      selectedAddress,
+      status: "pending", //order status can be changed by admin , it can be delivered , recieved etc 
+    };
+    dispatch(createOrderAsync(order));
+    //              TODO  --> redirect to order-success page
+    //              TODO  --> clear cart when the order is palced successfully
+    //              TODO  --> on server change the stock number of items
+  };
   return (
     <>
       {!items.length > 0 && <Navigate to="/" replace={true}></Navigate>}
+      {/* redirects to the order confirmation page when the order is successfully placed */}
+      {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`}replace={true}></Navigate>}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
           {/* For Personal Information  */}
@@ -268,14 +281,14 @@ setPaymentMethod(e.target.value);
                     Choose from Existing addresses
                   </p>
                   <ul role="list">
-                    {user.addresses.map((address,index) => (
+                    {user.addresses.map((address, index) => (
                       <li
                         key={index}
                         className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-gray-200"
                       >
                         <div className="flex gap-x-4">
                           <input
-                          onChange={handleAddress}
+                            onChange={handleAddress}
                             name="address"
                             type="radio"
                             value={index}
@@ -319,8 +332,8 @@ setPaymentMethod(e.target.value);
                             id="cash"
                             name="payments"
                             onChange={handlePayment}
-                            value='cash'
-                            checked={paymentMethod==='cash'}
+                            value="cash"
+                            checked={paymentMethod === "cash"}
                             type="radio"
                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                           />
@@ -335,9 +348,9 @@ setPaymentMethod(e.target.value);
                           <input
                             id="card"
                             name="payments"
-                            value ='card'
+                            value="card"
                             onChange={handlePayment}
-                            checked={paymentMethod==='card'}
+                            checked={paymentMethod === "card"}
                             type="radio"
                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                           />
@@ -437,10 +450,10 @@ setPaymentMethod(e.target.value);
                 </p>
                 <div className="mt-6">
                   <div
-                 onClick={handleOrder}
+                    onClick={handleOrder}
                     className="flex items-center cursor-pointer justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                   >
-                   Order Now
+                    Order Now
                   </div>
                 </div>
                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
