@@ -11,6 +11,8 @@ import { selectLoggedInUser } from "./features/auth/authSlice";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
 import OrderSuccessPage from "./pages/orderSuccessPage";
 import PageNotFound from "./pages/404";
+import UserOrders from "./features/user/components/UserOrders";
+import { Footer } from "./pages/Footer";
 
 
 import "./App.css";
@@ -22,6 +24,7 @@ import {
   Route,
   Link,
 } from "react-router-dom";
+
 
 const router = createBrowserRouter([
   {
@@ -69,6 +72,23 @@ const router = createBrowserRouter([
     element: (
     
    <OrderSuccessPage></OrderSuccessPage>
+
+    ),
+  },
+  {
+    path: "/orders",
+    element: (
+    
+  <UserOrders></UserOrders>
+  //we will add page later on , now using the component directly for testing
+
+    ),
+  },
+  {
+    path: "/footer",
+    element: (
+    
+ <Footer></Footer>
 
     ),
   },
