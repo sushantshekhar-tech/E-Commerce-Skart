@@ -14,6 +14,7 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import { createOrderAsync, selectCurrentOrder} from "../features/order/orderSlice";
+import Footer from "./Footer";
 
 function Checkout() {
   //useForms
@@ -476,6 +477,7 @@ function Checkout() {
           </div>
         </div>
       </div>
+      <Footer></Footer>
     </>
   );
 }

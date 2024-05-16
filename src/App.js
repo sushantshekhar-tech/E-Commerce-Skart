@@ -11,8 +11,8 @@ import { selectLoggedInUser } from "./features/auth/authSlice";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
 import OrderSuccessPage from "./pages/orderSuccessPage";
 import PageNotFound from "./pages/404";
-import UserOrders from "./features/user/components/UserOrders";
 import { Footer } from "./pages/Footer";
+import { UserOrderPage } from "./pages/UserOrderPage";
 
 
 import "./App.css";
@@ -79,9 +79,7 @@ const router = createBrowserRouter([
     path: "/orders",
     element: (
     
-  <UserOrders></UserOrders>
-  //we will add page later on , now using the component directly for testing
-
+<UserOrderPage></UserOrderPage>
     ),
   },
   {

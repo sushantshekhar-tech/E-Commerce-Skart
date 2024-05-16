@@ -8,8 +8,8 @@ export const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap text-left lg:text-left">
           <div className="w-full lg:w-6/12 px-4">
-            <h4 className="text-3xl font-semibold text-blueGray-700 text-white">Let's keep in touch!</h4>
-            <h5 className="text-lg mt-0 mb-2 text-blueGray-600 text-white">
+            <h4 className="text-3xl font-semibold text-white">Let's keep in touch!</h4>
+            <h5 className="text-lg mt-0 mb-2 text-white">
               Find us on any of these platforms, we respond 1-2 business days.
             </h5>
             <div className="mt-6 lg:mb-0 mb-6">
@@ -72,7 +72,7 @@ export const Footer = () => {
             <div className="text-sm text-blueGray-500 font-semibold py-1 text-white">
               Copyright © <span id="get-current-year">2024</span>
               <a href="https://snmrgroup.com/" className="text-blueGray-500 hover:text-yellow-500" target="_blank" rel="noopener noreferrer">
-             Designed & Developed By <a href="https://snmrgroup.com/" className="text-blueGray-500 hover:text-blueGray-800">SNMR-Group</a>.
+                Designed & Developed By SNMR-Group
               </a>
             </div>
           </div>
