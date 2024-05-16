@@ -13,6 +13,9 @@ import OrderSuccessPage from "./pages/orderSuccessPage";
 import PageNotFound from "./pages/404";
 import { Footer } from "./pages/Footer";
 import { UserOrderPage } from "./pages/UserOrderPage";
+import UserProfilePage from "./pages/UserProfilePage";
+import { fetchLoggedInUserAsync } from "./features/user/userSlice";
+
 
 
 import "./App.css";
@@ -24,6 +27,7 @@ import {
   Route,
   Link,
 } from "react-router-dom";
+
 
 
 const router = createBrowserRouter([
@@ -83,6 +87,13 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/profile",
+    element: (
+    
+<UserProfilePage></UserProfilePage>
+    ),
+  },
+  {
     path: "/footer",
     element: (
     
@@ -106,6 +117,7 @@ function App() {
     if (user) {
    
       dispatch(fetchItemsByUserIdAsync(user.id));
+      dispatch(fetchLoggedInUserAsync(user.id));
     }
 
   }, [dispatch,user]);

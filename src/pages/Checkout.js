@@ -8,13 +8,14 @@ import {
 } from "../features/cart/cartSlice";
 import { Link, Navigate } from "react-router-dom";
 import {
-  selectLoggedInUser,
+ 
   updateUserAsync,
 } from "../features/auth/authSlice";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import { createOrderAsync, selectCurrentOrder} from "../features/order/orderSlice";
 import Footer from "./Footer";
+import { selectUserInfo } from "../features/user/userSlice";
 
 function Checkout() {
   //useForms
@@ -27,7 +28,8 @@ function Checkout() {
   } = useForm();
 
   //Adding the address of a particular user
-  const user = useSelector(selectLoggedInUser);
+ 
+  const user = useSelector(selectUserInfo);
   const currentOrder =useSelector(selectCurrentOrder);
 
   const dispatch = useDispatch();
