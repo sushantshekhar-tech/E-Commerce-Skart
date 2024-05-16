@@ -15,7 +15,8 @@ import { Footer } from "./pages/Footer";
 import { UserOrderPage } from "./pages/UserOrderPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import { fetchLoggedInUserAsync } from "./features/user/userSlice";
-
+import Logout from "./features/auth/components/Logout";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
 
 import "./App.css";
@@ -27,6 +28,7 @@ import {
   Route,
   Link,
 } from "react-router-dom";
+
 
 
 
@@ -92,6 +94,17 @@ const router = createBrowserRouter([
     
 <UserProfilePage></UserProfilePage>
     ),
+  },
+  {
+    path: "/logout",
+    element: (
+    
+<Logout></Logout>
+    ),
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPasswordPage></ForgotPasswordPage>,
   },
   {
     path: "/footer",
